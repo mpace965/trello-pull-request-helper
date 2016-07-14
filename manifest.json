@@ -25,15 +25,5 @@
   "permissions": [
     "tabs",
     "https://github.com/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": [
-        "https://github.com/*/*/pull/*"
-      ],
-      "js": [
-        "src/inject/inject.js"
-      ]
-    }
   ]
 }
