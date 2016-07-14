@@ -1,22 +1,25 @@
 chrome.extension.sendMessage({ action: 'add-classes' }, response => {
-	const threadId = document.querySelector('[name="thread_id"]').value
-	const issue = document.getElementById(`issue-${threadId}`)
-	const commentBody = issue.getElementsByClassName('comment-body markdown-body markdown-format js-comment-body')[0]
+	const thread = document.querySelector('[name="thread_id"]')
 
-	const trelloCardURL = this.trelloCardURL(commentBody)
+	if (thread) {
+		const issue = document.getElementById(`issue-${thread.value}`)
+		const commentBody = issue.getElementsByClassName('comment-body markdown-body markdown-format js-comment-body')[0]
 
-	if (trelloCardURL) {
-		const container = document.getElementsByClassName('container new-discussion-timeline experiment-repo-nav')[0]
-		const issuesListing = container.getElementsByClassName('issues-listing')[0]
-		const pullRequest = issuesListing.getElementsByClassName('clearfix js-issues-results')[0]
-		const trelloDiv = issuesListing.appendChild(document.createElement('div'))
+		const trelloCardURL = this.trelloCardURL(commentBody)
 
-		container.classList.add('inject-container')
-		issuesListing.classList.add('inject-issues-listing')
-		pullRequest.classList.add('inject-pull-request')
-		trelloDiv.classList.add('inject-trello-div')
+		if (trelloCardURL) {
+			const container = document.getElementsByClassName('container new-discussion-timeline experiment-repo-nav')[0]
+			const issuesListing = container.getElementsByClassName('issues-listing')[0]
+			const pullRequest = issuesListing.getElementsByClassName('clearfix js-issues-results')[0]
+			const trelloDiv = issuesListing.appendChild(document.createElement('div'))
 
-		chrome.extension.sendMessage({ action: 'inject-stylesheet' })
+			container.classList.add('inject-container')
+			issuesListing.classList.add('inject-issues-listing')
+			pullRequest.classList.add('inject-pull-request')
+			trelloDiv.classList.add('inject-trello-div')
+
+			chrome.extension.sendMessage({ action: 'inject-stylesheet' })
+		}
 	}
 })
 
