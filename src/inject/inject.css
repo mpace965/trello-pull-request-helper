@@ -1,0 +1,20 @@
+.inject-container {
+  width: 1180px !important;
+}
+
+.inject-issues-listing {
+  display: flex;
+  flex-flow: row nowrap
+}
+
+.inject-pull-request {
+  order: 1;
+  flex: 1 1 auto;
+}
+
+.inject-trello-div {
+  order: 2;
+  flex: 0 0 auto;
+  min-width: 200px;
+  padding-left: 20px;
+}

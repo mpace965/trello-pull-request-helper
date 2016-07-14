@@ -15,3 +15,5 @@ chrome.extension.sendMessage({ action: 'add-classes' }, response => {
 		}
 	}, 10)
 })
+
+chrome.extension.sendMessage({ action: 'inject-stylesheet' })
