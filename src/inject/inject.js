@@ -30,7 +30,7 @@ function trelloCardURL(commentBody) {
 	const trelloCardElement = this.trelloCardElement(commentBody)
 
 	if (trelloCardElement) {
-		return trelloCardElement.innerHTML.match('https:\/\/trello.com\/c\/[a-zA-z1-9]+\/[a-zA-z1-9-]+')[0]
+		return trelloCardElement.innerHTML.match('https:\/\/trello\.com\/c\/[a-zA-z1-9]+\/[a-zA-z1-9-]+')[0]
 	}
 
 	return null
