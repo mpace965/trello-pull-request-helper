@@ -2,7 +2,7 @@
   "name": "Trello Pull Request Helper",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Inserts any linked trello card in parrallel with a GitHub pull request.",
+  "description": "Inserts any linked Trello card inline with a GitHub pull request.",
   "homepage_url": "https://twitter.com/mpace965",
   "icons": {
     "16": "icons/icon16.png",

@@ -1,5 +1,5 @@
-# trello-pull-request-helper
-Chrome extension that inserts any linked trello card in parrallel with a GitHub pull request.
+# Trello Pull Request Helper
+Chrome extension that inserts any linked Trello card inline with a GitHub pull request.
 
 ## Technology
 
@@ -11,10 +11,10 @@ Warning, this repository is a work in progress!
 
 **TODO**
 
--[] Create Trello authorization page
--[] Use Trello authorization to read linked cards
--[] Render Trello card inline
--[] Update icons
+* Create Trello authorization page
+* Use Trello authorization to read linked cards
+* Render Trello card inline
+* Update icons
 
 ## Caveats
 
