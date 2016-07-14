@@ -1,6 +1,21 @@
 # trello-pull-request-helper
 Chrome extension that inserts any linked trello card in parrallel with a GitHub pull request.
 
+## Technology
+
+I used [Extensionizr](http://extensionizr.com/) to get up and running quickly.
+
+## Incomplete!
+
+Warning, this repository is a work in progress!
+
+**TODO**
+
+-[] Create Trello authorization page
+-[] Use Trello authorization to read linked cards
+-[] Render Trello card inline
+-[] Update icons
+
 ## Caveats
 
 I've tried to make the script only get executed once when a pull request page loads. This is now the case
