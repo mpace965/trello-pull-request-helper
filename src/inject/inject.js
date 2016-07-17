@@ -18,10 +18,19 @@ chrome.extension.sendMessage({ action: 'add-classes' }, response => {
       pullRequest.classList.add('inject-pull-request')
       trelloDiv.classList.add('inject-trello-div')
 
+      trelloDiv.id = "trelloCardMountPoint"
+
       chrome.extension.sendMessage({ action: 'inject-stylesheet' })
+      chrome.extension.sendMessage({ action: 'inject-trello-card', trelloCardURL }, response => {
+        this.injectTrelloCard(response.trelloCard)
+      })
     }
   }
 })
+
+function injectTrelloCard(trelloCard) {
+  document.getElementById('trelloCardMountPoint')
+}
 
 function trelloCardURL(commentBody) {
   const trelloCardElement = this.trelloCardElement(commentBody)

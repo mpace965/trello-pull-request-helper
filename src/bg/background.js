@@ -3,10 +3,16 @@ let shouldExecuteScript = true
 chrome.extension.onMessage.addListener((request, sender, sendResponse) => {
   switch(request.action) {
     case 'add-classes':
-      sendResponse()
+      if (localStorage.trello_token) {
+        sendResponse()
+      }
       break
     case 'inject-stylesheet':
       chrome.tabs.insertCSS(null, { file: 'src/inject/inject.css' })
+      break
+    case 'inject-trello-card':
+      const trelloCard = this.getTrelloCard(request.trelloCardURL)
+      sendResponse({ trelloCard })
       break
   }
 })
@@ -24,3 +30,15 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     })
   }
 })
+
+// TODO find out why passing this to inject.js doesn't work
+function getTrelloCard(trelloCardURL) {
+  const idWithSlashes = trelloCardURL.match('\/[a-zA-z0-9]{2,}\/')[0]
+  const trelloCardId = idWithSlashes.substring(1, idWithSlashes.length - 1)
+  const trelloCardHTML = `https://trello.com/c/${trelloCardId}.html`
+
+  var trelloCard = document.createElement('iframe')
+  trelloCard.src = trelloCardHTML
+
+  return trelloCard
+}
