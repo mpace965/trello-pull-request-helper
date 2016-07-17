@@ -24,12 +24,7 @@ function restoreApiKey(apiKey) {
     })
   }
 
-  Trello.setKey(apiKey)
-  Trello.authorize({
-    name: appName,
-    expiration: 'never',
-    interactive: false
-  })
+  authorizeTrello(apiKey, false)
 }
 
 function saveOptions() {
@@ -39,7 +34,7 @@ function saveOptions() {
     apiKey
   }, animateSaveButton)
 
-  authorizeTrello(apiKey)
+  authorizeTrello(apiKey, true)
 }
 
 function animateSaveButton() {
@@ -55,12 +50,13 @@ function animateSaveButton() {
   }, 1000)
 }
 
-function authorizeTrello(apiKey) {
+function authorizeTrello(apiKey, interactive) {
   Trello.setKey(apiKey)
 
   Trello.authorize({
     name: appName,
-    expiration: 'never'
+    expiration: 'never',
+    interactive
   })
 }
 
