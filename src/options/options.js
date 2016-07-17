@@ -1,8 +1,34 @@
+const appName = 'Trello Pull Request Helper'
+
 function restoreOptions() {
   chrome.storage.sync.get({
     apiKey: ''
   }, items => {
-    $('#apiKey').val(items.apiKey)
+    restoreApiKey(items.apiKey)
+  })
+}
+
+function restoreApiKey(apiKey) {
+  $('#apiKey').val(apiKey)
+
+  if (localStorage.trello_token) {
+    $.get({
+      url: `http://api.trello.com/1/token/${localStorage.trello_token}`,
+      data: { key: apiKey },
+      error: response => {
+        if (response.status === 404) {
+          Trello.deauthorize()
+          location.reload()
+        }
+      }
+    })
+  }
+
+  Trello.setKey(apiKey)
+  Trello.authorize({
+    name: appName,
+    expiration: 'never',
+    interactive: false
   })
 }
 
@@ -12,6 +38,8 @@ function saveOptions() {
   chrome.storage.sync.set({
     apiKey
   }, animateSaveButton)
+
+  authorizeTrello(apiKey)
 }
 
 function animateSaveButton() {
@@ -25,6 +53,15 @@ function animateSaveButton() {
     saveButton.addClass('btn-primary')
     saveButton.html('Save')
   }, 1000)
+}
+
+function authorizeTrello(apiKey) {
+  Trello.setKey(apiKey)
+
+  Trello.authorize({
+    name: appName,
+    expiration: 'never'
+  })
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions)

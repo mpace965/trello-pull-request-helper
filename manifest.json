@@ -24,5 +24,8 @@
     "tabs",
     "storage",
     "https://github.com/*"
+  ],
+  "web_accessible_resources": [
+    "src/options/options.html"
   ]
 }
