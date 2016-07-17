@@ -11,18 +11,20 @@ function saveOptions() {
 
   chrome.storage.sync.set({
     apiKey
-  }, () => {
-    const saveButton = $('#saveButton')
-    saveButton.removeClass('btn-primary')
-    saveButton.addClass('btn-success')
-    saveButton.html('Saved!')
+  }, animateSaveButton)
+}
 
-    setTimeout(() => {
-      saveButton.removeClass('btn-success')
-      saveButton.addClass('btn-primary')
-      saveButton.html('Save')
-    }, 1000)
-  })
+function animateSaveButton() {
+  const saveButton = $('#saveButton')
+  saveButton.removeClass('btn-primary')
+  saveButton.addClass('btn-success')
+  saveButton.html('Saved!')
+
+  setTimeout(() => {
+    saveButton.removeClass('btn-success')
+    saveButton.addClass('btn-primary')
+    saveButton.html('Save')
+  }, 1000)
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions)
