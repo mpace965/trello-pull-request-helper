@@ -1,3 +1,4 @@
+const appName = 'Trello Pull Request Helper'
 let shouldExecuteScript = true
 
 chrome.extension.onMessage.addListener((request, sender, sendResponse) => {
@@ -11,8 +12,7 @@ chrome.extension.onMessage.addListener((request, sender, sendResponse) => {
       chrome.tabs.insertCSS(null, { file: 'src/inject/inject.css' })
       break
     case 'inject-trello-card':
-      const trelloCard = this.getTrelloCard(request.trelloCardURL)
-      sendResponse({ trelloCard })
+      this.getTrelloCardInfo(request.trelloCardURL, sendResponse)
       break
   }
 })
@@ -31,14 +31,39 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 })
 
-// TODO find out why passing this to inject.js doesn't work
-function getTrelloCard(trelloCardURL) {
+function loadFromStorage(key, callback) {
+  let retrieve = {}
+  retrieve[key] = key
+
+  chrome.storage.sync.get(retrieve, items => {
+    if (items[key]) {
+      return items[key]
+    } else {
+      return null
+    }
+  })
+}
+
+function getTrelloCardInfo(trelloCardURL, sendResponse) {
   const idWithSlashes = trelloCardURL.match('\/[a-zA-z0-9]{2,}\/')[0]
   const trelloCardId = idWithSlashes.substring(1, idWithSlashes.length - 1)
-  const trelloCardHTML = `https://trello.com/c/${trelloCardId}.html`
 
-  var trelloCard = document.createElement('iframe')
-  trelloCard.src = trelloCardHTML
+  chrome.storage.sync.get({ apiKey: '' }, items => {
+    if (items.apiKey) {
+      Trello.setKey(items.apiKey)
+      Trello.authorize({
+        name: appName,
+        expiration: 'never',
+        interactive: false
+      })
 
-  return trelloCard
+      Trello.cards.get(trelloCardId,
+      trelloCardInfo => { // Success
+        sendResponse({ trelloCardInfo })
+      },
+      () => { // Error
+        sendResponse(null)
+      })
+    }
+  })
 }

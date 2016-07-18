@@ -1,3 +1,5 @@
+// TODO refactor to use chrome.runtime.connect
+
 chrome.extension.sendMessage({ action: 'add-classes' }, response => {
   const thread = document.querySelector('[name="thread_id"]')
 
@@ -22,14 +24,14 @@ chrome.extension.sendMessage({ action: 'add-classes' }, response => {
 
       chrome.extension.sendMessage({ action: 'inject-stylesheet' })
       chrome.extension.sendMessage({ action: 'inject-trello-card', trelloCardURL }, response => {
-        this.injectTrelloCard(response.trelloCard)
+        this.injectTrelloCard(response.trelloCardInfo)
       })
     }
   }
 })
 
-function injectTrelloCard(trelloCard) {
-  document.getElementById('trelloCardMountPoint')
+function injectTrelloCard(trelloCardInfo) {
+  console.log(trelloCardInfo)
 }
 
 function trelloCardURL(commentBody) {
