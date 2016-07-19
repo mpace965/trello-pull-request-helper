@@ -11,8 +11,8 @@ Warning, this repository is a work in progress!
 
 **TODO**
 
-* Create Trello authorization page
-* Use Trello authorization to read linked cards
+* ~~Create Trello authorization page~~
+* ~~Use Trello authorization to read linked cards~~
 * Render Trello card inline
 * Update icons
 
