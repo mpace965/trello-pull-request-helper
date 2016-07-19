@@ -1,20 +1,16 @@
 const appName = 'Trello Pull Request Helper'
 let shouldExecuteScript = true
 
-chrome.extension.onMessage.addListener((request, sender, sendResponse) => {
-  switch(request.action) {
-    case 'add-classes':
-      if (localStorage.trello_token) {
-        sendResponse()
-      }
-      break
-    case 'inject-stylesheet':
+chrome.runtime.onConnect.addListener(port => {
+  console.assert(port.name === 'trello-helper')
+
+  port.onMessage.addListener(message => {
+    if (message.action === 'inject-stylesheet') {
       chrome.tabs.insertCSS(null, { file: 'src/inject/inject.css' })
-      break
-    case 'inject-trello-card':
-      this.getTrelloCardInfo(request.trelloCardURL, sendResponse)
-      break
-  }
+    } else if (message.action === 'inject-trello-card') {
+      this.getTrelloCardInfo(message.trelloCardURL, port)
+    }
+  })
 })
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -31,20 +27,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 })
 
-function loadFromStorage(key, callback) {
-  let retrieve = {}
-  retrieve[key] = key
-
-  chrome.storage.sync.get(retrieve, items => {
-    if (items[key]) {
-      return items[key]
-    } else {
-      return null
-    }
-  })
-}
-
-function getTrelloCardInfo(trelloCardURL, sendResponse) {
+function getTrelloCardInfo(trelloCardURL, port) {
   const idWithSlashes = trelloCardURL.match('\/[a-zA-z0-9]{2,}\/')[0]
   const trelloCardId = idWithSlashes.substring(1, idWithSlashes.length - 1)
 
@@ -59,10 +42,10 @@ function getTrelloCardInfo(trelloCardURL, sendResponse) {
 
       Trello.cards.get(trelloCardId,
       trelloCardInfo => { // Success
-        sendResponse({ trelloCardInfo })
+        port.postMessage({ action: 'inject-trello-card', trelloCardInfo })
       },
       () => { // Error
-        sendResponse(null)
+        port.postMessage({ action: 'inject-trello-card', trelloCardInfo: null })
       })
     }
   })
